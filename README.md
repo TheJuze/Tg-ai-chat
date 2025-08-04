@@ -61,9 +61,11 @@ npm run build
 npm start
 ```
 
-## Docker Deployment
+## Deployment Options
 
-### Using Docker Compose (Recommended)
+### Option 1: Local Docker Deployment
+
+#### Using Docker Compose (Recommended)
 
 1. **Set Environment Variables**
 
@@ -100,6 +102,38 @@ docker run -d \
   -v $(pwd)/logs:/app/logs \
   telegram-ai-bot
 ```
+
+### Option 2: Server Deployment
+
+For production deployment on your personal server, see the comprehensive [DEPLOYMENT.md](DEPLOYMENT.md) guide.
+
+#### Quick Server Setup
+
+1. **Run server setup script:**
+   ```bash
+   # On your server
+   curl -fsSL https://raw.githubusercontent.com/your-repo/main/scripts/server-setup.sh | bash
+   ```
+
+2. **Configure remote deployment:**
+   ```bash
+   # Edit the deployment script
+   nano scripts/remote-deploy.sh
+   # Set SERVER_USER and SERVER_HOST variables
+   ```
+
+3. **Deploy to server:**
+   ```bash
+   ./scripts/remote-deploy.sh
+   ```
+
+#### Production Features
+
+- **Automatic health checks** every 5 minutes
+- **Log rotation** to prevent disk space issues
+- **Resource limits** to prevent memory leaks
+- **Auto-restart** on failure
+- **Monitoring dashboard** with `./scripts/monitor.sh`
 
 ## Bot Commands
 

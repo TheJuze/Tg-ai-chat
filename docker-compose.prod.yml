@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  telegram-bot:
+    build: .
+    container_name: telegram-ai-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LOG_LEVEL=info
+      - MAX_CONVERSATION_LENGTH=50
+      - OPENAI_MODEL=gpt-3.5-turbo
+      - OPENAI_MAX_TOKENS=1000
+      - OPENAI_TEMPERATURE=0.7
+      - NODE_OPTIONS=--max-old-space-size=512
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - bot-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('Health check passed')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  bot-network:
+    driver: bridge 
